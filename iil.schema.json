@@ -7,79 +7,79 @@
     "id": {
       "type": "string",
       "format": "uuid",
-      "description": "The unique identifier for an iil."
+      "description": "An unique identifier for an iil."
     },
     "namespace": {
       "type": "string",
-      "description": ""
+      "description": "a namespace under which the work is categorized."
     },
     "version": {
       "type": "string",
-      "description": ""
+      "description": "a version number of the work."
     },
     "help": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
-      "description": ""
+      "description": "metadata that can be informed to actor in order to lead them to complition of a work"
     },
     "about": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
-      "description": ""
+      "description": "metadata explaining the work itself"
     },
     "goal": {
       "type": "string",
       "format": "uuid",
-      "description": "Unique identifier for the goal that the task is associated with."
+      "description": "an unique identifier of the parent work."
     },
     "input": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
-      "description": "Input required for the task."
+      "description": "an input required for the work."
     },
     "activateIf": {
       "$ref": "#/$defs/Condition",
-      "description": "A condition under which the task is activated."
+      "description": "condition that activates this work."
     },
     "act": {
       "$ref": "#/$defs/Action",
-      "description": "An action that the task performs."
+      "description": "action that is expected to be done by actor."
     },
     "actor": {
       "$ref": "#/$defs/Actor",
-      "description": "An actor who performs the task"
+      "description": "actor who is responsible for task performance."
     },
     "finishIf": {
       "$ref": "#/$defs/Condition",
-      "description": "A condition under which the task is completed."
+      "description": "condition under which the task is completed."
     },
     "output": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
-      "description": "Output produced by the task."
+      "description": "output produced by the task."
     },
     "variable": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
-      "description": "Variables associated with the task."
+      "description": "variables associated with the task."
     },
     "maintainer": {
       "type": "string",
-      "description": ""
+      "description": "an ID of maintainer"
     },
     "owner": {
       "type": "string",
-      "description": ""
+      "description": "an ID of owner"
     },
     "state": {
       "type": "string",
@@ -90,23 +90,23 @@
         "FINISHED",
         "ABORTED"
       ],
-      "description": ""
+      "description": "a state of iil"
     },
     "abortIf": {
       "$ref": "#/$defs/Condition",
-      "description": ""
+      "description": "condition of abortion (mostly due to external factor)"
     },
     "updatedAt": {
       "type": "string",
       "format": "date-time",
-      "description": ""
+      "description": "time of last update"
     },
     "next": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
-      "description": "Next task to be performed after the current task."
+      "description": "next task(s) to be performed after the current task."
     }
   },
   "$defs" : {
