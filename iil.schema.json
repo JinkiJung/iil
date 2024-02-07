@@ -16,7 +16,7 @@
     },
     "act": {
       "$ref": "#/$defs/Action",
-      "description": "A single unit of behavior with a clear beginning and end."
+      "description": "a single unit of behavior with a clear beginning and end."
     },
     "actor": {
       "$ref": "#/$defs/Actor",
@@ -29,7 +29,7 @@
     "goal": {
       "type": "string",
       "format": "uuid",
-      "description": "an unique identifier of the parent work."
+      "description": "ID of the parent work item that this work contributes to."
     },
     "namespace": {
       "type": "string",
@@ -58,7 +58,7 @@
       "additionalProperties": {
         "type": "object"
       },
-      "description": "an input required for the work."
+      "description": "input required for the work."
     },
     "output": {
       "type": "object",
@@ -76,11 +76,11 @@
     },
     "maintainer": {
       "type": "string",
-      "description": "an ID of maintainer"
+      "description": "ID of maintainer"
     },
     "owner": {
       "type": "string",
-      "description": "an ID of owner"
+      "description": "ID of owner"
     },
     "state": {
       "type": "string",
