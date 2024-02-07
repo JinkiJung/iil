@@ -10,6 +10,27 @@
       "format": "uuid",
       "description": "An unique identifier for an iil."
     },
+    "activateIf": {
+      "$ref": "#/$defs/Condition",
+      "description": "condition that activates this work."
+    },
+    "act": {
+      "$ref": "#/$defs/Action",
+      "description": "A single unit of behavior with a clear beginning and end."
+    },
+    "actor": {
+      "$ref": "#/$defs/Actor",
+      "description": "actor who is responsible for task performance."
+    },
+    "finishIf": {
+      "$ref": "#/$defs/Condition",
+      "description": "condition under which the task is completed."
+    },
+    "goal": {
+      "type": "string",
+      "format": "uuid",
+      "description": "an unique identifier of the parent work."
+    },
     "namespace": {
       "type": "string",
       "description": "a namespace under which the work is categorized."
@@ -32,33 +53,12 @@
       },
       "description": "metadata explaining the work itself"
     },
-    "goal": {
-      "type": "string",
-      "format": "uuid",
-      "description": "an unique identifier of the parent work."
-    },
     "input": {
       "type": "object",
       "additionalProperties": {
         "type": "object"
       },
       "description": "an input required for the work."
-    },
-    "activateIf": {
-      "$ref": "#/$defs/Condition",
-      "description": "condition that activates this work."
-    },
-    "act": {
-      "$ref": "#/$defs/Action",
-      "description": "action that is expected to be done by actor."
-    },
-    "actor": {
-      "$ref": "#/$defs/Actor",
-      "description": "actor who is responsible for task performance."
-    },
-    "finishIf": {
-      "$ref": "#/$defs/Condition",
-      "description": "condition under which the task is completed."
     },
     "output": {
       "type": "object",
