@@ -1,6 +1,6 @@
 {
   "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-  "$version": "1.0.1",
+  "$version": "1.0.2",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "description": "A work description model.",
@@ -19,7 +19,7 @@
       "description": "a single unit of behavior with a clear beginning and end."
     },
     "actor": {
-      "$ref": "#/$defs/Actor",
+      "type": "string",
       "description": "actor who is responsible for task performance."
     },
     "finishIf": {
@@ -41,37 +41,22 @@
     },
     "help": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "description": "metadata that can be informed to actor in order to lead them to complition of a work"
     },
     "about": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "description": "metadata explaining the work itself"
     },
     "input": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "description": "input required for the work."
     },
     "output": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "description": "output produced by the task."
     },
     "variable": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "description": "variables associated with the task."
     },
     "maintainer": {
@@ -136,38 +121,7 @@
         },
         "input": {
           "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          },
           "description": "input to act."
-        }
-      }
-    },
-    "Actor": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "name": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "iconLink": {
-          "type": "string"
-        },
-        "actorList": {
-          "uniqueItems": true,
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/Actor"
-          }
-        },
-        "group": {
-          "type": "boolean"
         }
       }
     },
@@ -206,9 +160,6 @@
         },
         "input": {
           "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          },
           "description": "input for checking condition."
         }
       }
