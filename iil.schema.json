@@ -110,6 +110,7 @@
       "description": "next task(s) to be performed after the current task."
     }
   },
+  "required": [ "finishIf", "act"],
   "$defs" : {
     "Action": {
       "type": "object",
