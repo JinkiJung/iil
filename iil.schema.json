@@ -114,9 +114,6 @@
   "$defs": {
     "Act": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "properties": {
         "id": {
           "type": "string",
@@ -148,9 +145,6 @@
     },
     "Condition": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "properties": {
         "id": {
           "type": "string",
@@ -193,9 +187,6 @@
     },
     "Flow": {
       "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
       "properties": {
         "input": {
           "type": "object",
