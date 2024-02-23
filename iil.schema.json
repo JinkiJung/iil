@@ -1,6 +1,6 @@
 {
   "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-  "$version": "1.0.3",
+  "$version": "1.0.4",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "description": "A work description model.",
@@ -172,7 +172,7 @@
           "description": "input to check"
         },
         "flows": {
-          "type": "array",
+          "type": [ "array", "null" ],
           "items": {
             "type": "object",
             "properties": {
