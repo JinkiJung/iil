@@ -1,6 +1,6 @@
 {
   "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-  "$version": "1.0.4",
+  "$version": "1.0.5",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "description": "A work description model.",
@@ -42,35 +42,35 @@
     "help": {
       "type": "object",
       "additionalProperties": {
-        "type": "object"
+        "type": "string"
       },
       "description": "metadata that can be informed to actor in order to lead them to complition of a work"
     },
     "about": {
       "type": "object",
       "additionalProperties": {
-        "type": "object"
+        "type": "string"
       },
       "description": "metadata explaining the work itself"
     },
     "input": {
       "type": "object",
       "additionalProperties": {
-        "type": "object"
+        "type": "string"
       },
       "description": "input required for the work."
     },
     "output": {
       "type": "object",
       "additionalProperties": {
-        "type": "object"
+        "type": "string"
       },
       "description": "output produced by the task."
     },
     "variable": {
       "type": "object",
       "additionalProperties": {
-        "type": "object"
+        "type": "string"
       },
       "description": "variables associated with the task."
     },
@@ -137,7 +137,7 @@
         "input": {
           "type": "object",
           "additionalProperties": {
-            "type": "object"
+            "type": "string"
           },
           "description": "input to act."
         }
@@ -179,7 +179,7 @@
         "input": {
           "type": "object",
           "additionalProperties": {
-            "type": "object"
+            "type": "string"
           },
           "description": "input for checking condition."
         }
@@ -190,13 +190,16 @@
       "properties": {
         "input": {
           "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
+          "additionalProperties": {
+            "type": "string"
+          },
           "description": "input to check"
         },
         "flows": {
-          "type": [ "array", "null" ],
+          "type": [
+            "array",
+            "null"
+          ],
           "items": {
             "type": "object",
             "additionalProperties": {
