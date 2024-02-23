@@ -1,6 +1,6 @@
 {
   "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-  "$version": "1.0",
+  "$version": "1.0.1",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "description": "A work description model.",
@@ -15,7 +15,7 @@
       "description": "condition that activates this work."
     },
     "act": {
-      "$ref": "#/$defs/Action",
+      "$ref": "#/$defs/Act",
       "description": "a single unit of behavior with a clear beginning and end."
     },
     "actor": {
@@ -103,16 +103,16 @@
       "description": "time of last update"
     },
     "next": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object"
-      },
+      "$ref": "#/$defs/Flow",
       "description": "next task(s) to be performed after the current task."
     }
   },
-  "required": [ "finishIf", "act"],
-  "$defs" : {
-    "Action": {
+  "required": [
+    "finishIf",
+    "act"
+  ],
+  "$defs": {
+    "Act": {
       "type": "object",
       "properties": {
         "id": {
@@ -133,6 +133,13 @@
         },
         "code": {
           "type": "string"
+        },
+        "input": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "description": "input to act."
         }
       }
     },
@@ -196,8 +203,56 @@
         },
         "code": {
           "type": "string"
+        },
+        "input": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "description": "input for checking condition."
         }
       }
+    },
+    "Flow": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "description": "input to check"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "$ref": "#/$defs/Condition"
+              },
+              "acts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Act"
+                }
+              }
+            }
+          }
+        },
+        "exception": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "action": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "description": "flow control element"
     }
   }
 }
