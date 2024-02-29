@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.6",
+    "$version": "1.0.7",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "A work description model.",
@@ -86,6 +86,7 @@
             "type": "string",
             "enum": [
                 "INACTIVATED",
+                "AWAITING",
                 "ACTIVATED",
                 "PENDING",
                 "FINISHED",
