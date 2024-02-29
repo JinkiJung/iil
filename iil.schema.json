@@ -1,239 +1,229 @@
 {
-  "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-  "$version": "1.0.5",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "description": "A work description model.",
-  "properties": {
-    "id": {
-      "type": "string",
-      "format": "uuid",
-      "description": "An unique identifier for an iil."
-    },
-    "activateIf": {
-      "$ref": "#/$defs/Condition",
-      "description": "condition that activates this work."
-    },
-    "act": {
-      "$ref": "#/$defs/Act",
-      "description": "a single unit of behavior with a clear beginning and end."
-    },
-    "actor": {
-      "type": "string",
-      "description": "actor who is responsible for task performance."
-    },
-    "finishIf": {
-      "$ref": "#/$defs/Condition",
-      "description": "condition under which the task is completed."
-    },
-    "goal": {
-      "type": "string",
-      "format": "uuid",
-      "description": "ID of the parent work item that this work contributes to."
-    },
-    "namespace": {
-      "type": "string",
-      "description": "a namespace under which the work is categorized."
-    },
-    "version": {
-      "type": "string",
-      "description": "a version number of the work."
-    },
-    "help": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      },
-      "description": "metadata that can be informed to actor in order to lead them to complition of a work"
-    },
-    "about": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      },
-      "description": "metadata explaining the work itself"
-    },
-    "input": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      },
-      "description": "input required for the work."
-    },
-    "output": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      },
-      "description": "output produced by the task."
-    },
-    "variable": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      },
-      "description": "variables associated with the task."
-    },
-    "maintainer": {
-      "type": "string",
-      "description": "ID of maintainer"
-    },
-    "owner": {
-      "type": "string",
-      "description": "ID of owner"
-    },
-    "state": {
-      "type": "string",
-      "enum": [
-        "NOT_ACTIVATED",
-        "ACTIVATED",
-        "PENDING",
-        "FINISHED",
-        "ABORTED"
-      ],
-      "description": "a state of iil"
-    },
-    "abortIf": {
-      "$ref": "#/$defs/Condition",
-      "description": "condition of abortion (mostly due to external factor)"
-    },
-    "updatedAt": {
-      "type": "string",
-      "format": "date-time",
-      "description": "time of last update"
-    },
-    "next": {
-      "$ref": "#/$defs/Flow",
-      "description": "next task(s) to be performed after the current task."
-    }
-  },
-  "required": [
-    "finishIf",
-    "act"
-  ],
-  "$defs": {
-    "Act": {
-      "type": "object",
-      "properties": {
+    "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
+    "$version": "1.0.6",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "description": "A work description model.",
+    "properties": {
         "id": {
-          "type": "string",
-          "format": "uuid"
+            "type": "string",
+            "format": "uuid",
+            "description": "An unique identifier for an iil."
+        },
+        "activateIf": {
+            "$ref": "#/$defs/Condition",
+            "description": "condition that activates this work."
+        },
+        "act": {
+            "$ref": "#/$defs/Act",
+            "description": "a single unit of behavior with a clear beginning and end."
+        },
+        "actor": {
+            "type": "string",
+            "description": "actor who is responsible for task performance."
+        },
+        "finishIf": {
+            "$ref": "#/$defs/Condition",
+            "description": "condition under which the task is completed."
+        },
+        "goal": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the parent work item that this work contributes to."
         },
         "namespace": {
-          "type": "string"
+            "type": "string",
+            "description": "a namespace under which the work is categorized."
         },
         "version": {
-          "type": "string"
+            "type": "string",
+            "description": "a version number of the work."
         },
-        "shortName": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "code": {
-          "type": "string"
-        },
-        "input": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "input to act."
-        }
-      }
-    },
-    "Condition": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "namespace": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "shortName": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "TIME",
-            "LOCATION",
-            "IIL_INPUT",
-            "IIL_VARIABLE",
-            "IIL_STATE",
-            "EVENT"
-          ]
-        },
-        "code": {
-          "type": "string"
-        },
-        "input": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "input for checking condition."
-        }
-      }
-    },
-    "Flow": {
-      "type": "object",
-      "properties": {
-        "input": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "input to check"
-        },
-        "flows": {
-          "type": [
-            "array",
-            "null"
-          ],
-          "items": {
+        "help": {
             "type": "object",
             "additionalProperties": {
-              "type": "object"
+                "type": "string"
+            },
+            "description": "metadata that can be informed to actor in order to lead them to complition of a work"
+        },
+        "about": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "description": "metadata explaining the work itself"
+        },
+        "input": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "description": "input required for the work."
+        },
+        "output": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "description": "output produced by the task."
+        },
+        "variable": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            },
+            "description": "variables associated with the task."
+        },
+        "maintainer": {
+            "type": "string",
+            "description": "ID of maintainer"
+        },
+        "owner": {
+            "type": "string",
+            "description": "ID of owner"
+        },
+        "state": {
+            "type": "string",
+            "enum": [
+                "INACTIVATED",
+                "ACTIVATED",
+                "PENDING",
+                "FINISHED",
+                "ABORTED"
+            ],
+            "description": "a state of iil"
+        },
+        "abortIf": {
+            "$ref": "#/$defs/Condition",
+            "description": "condition of abortion (mostly due to external factor)"
+        },
+        "next": {
+            "$ref": "#/$defs/AfterFinish",
+            "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output"
+        },
+        "onAbort": {
+            "$ref": "#/$defs/Flow",
+            "description": "flow control element"
+        }
+    },
+    "required": [
+        "finishIf",
+        "act"
+    ],
+    "$defs": {
+        "Act": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "Condition": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "namespace": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "TIME",
+                        "LOCATION",
+                        "IIL_INPUT",
+                        "IIL_VARIABLE",
+                        "IIL_STATE",
+                        "EVENT"
+                    ]
+                },
+                "code": {
+                    "type": "string"
+                },
+                "input": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "external input"
+                }
+            }
+        },
+        "AfterFinish": {
+            "type": "object",
+            "properties": {
+                "executedFlowIDs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "flows": {
+                    "type": [
+                        "array",
+                        "null"
+                    ],
+                    "items": {
+                        "$ref": "#/$defs/Flow"
+                    }
+                }
+            },
+            "description": "flow control element"
+        },
+        "Flow": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object"
             },
             "properties": {
-              "condition": {
-                "$ref": "#/$defs/Condition"
-              },
-              "acts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/$defs/Act"
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "evaluation": {
+                    "$ref": "#/$defs/Condition"
+                },
+                "execute": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Act"
+                    }
                 }
-              }
-            }
-          }
-        },
-        "exception": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          },
-          "properties": {
-            "type": {
-              "type": "string"
             },
-            "action": {
-              "type": "object"
-            }
-          }
+            "required": [
+                "id",
+                "execute"
+            ]
         }
-      },
-      "description": "flow control element"
     }
-  }
 }
