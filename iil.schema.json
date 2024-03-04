@@ -1,9 +1,9 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.8",
+    "$version": "1.0.9",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
-    "description": "A work description model.",
+    "description": "iil: a work description model.",
     "properties": {
         "id": {
             "type": "string",
@@ -87,7 +87,6 @@
             "type": "string",
             "enum": [
                 "INACTIVATED",
-                "AWAITING",
                 "ACTIVATED",
                 "PENDING",
                 "FINISHED",
@@ -100,8 +99,17 @@
             "description": "condition of abortion (mostly due to external factor)"
         },
         "next": {
-            "$ref": "#/$defs/AfterFinish",
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "item": "object",
+                "additionalProperties": true
+            },
             "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output"
+        },
+        "executedNextCondition": {
+            "type": "string",
+            "description": "executed condition from next branch"
         },
         "onAbort": {
             "$ref": "#/$defs/Flow",
@@ -176,55 +184,49 @@
                         "type": "string"
                     },
                     "description": "external input"
+                },
+                "injectedBy": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "source iil ID for injection"
                 }
             }
         },
-        "AfterFinish": {
-            "type": "object",
-            "properties": {
-                "executedFlowIDs": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "flows": {
-                    "type": [
-                        "array",
-                        "null"
-                    ],
-                    "items": {
-                        "$ref": "#/$defs/Flow"
-                    }
-                }
-            },
-            "description": "flow control element"
-        },
         "Flow": {
             "type": "object",
-            "additionalProperties": {
-                "type": "object"
-            },
             "properties": {
-                "id": {
+                "flowType": {
+                    "type": "string",
+                    "enum": [
+                        "create",
+                        "activate",
+                        "finish"
+                    ]
+                },
+                "fromIil": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "toIil": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "actor": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "evaluation": {
-                    "$ref": "#/$defs/Condition"
-                },
-                "execute": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/$defs/Act"
+                "inputInjection": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "item": "object",
+                        "additionalProperties": true
                     }
                 }
             },
             "required": [
-                "id",
-                "execute"
+                "flowType",
+                "fromIil",
+                "toIil"
             ]
         }
     }
