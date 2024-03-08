@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.9",
+    "$version": "1.0.10",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "iil: a work description model.",
@@ -31,6 +31,14 @@
             "format": "uuid",
             "description": "ID of the parent work item that this work contributes to."
         },
+        "subtask": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "description": "subtasks that are part of the work."
+        },
         "namespace": {
             "type": "string",
             "description": "a namespace under which the work is categorized."
@@ -55,25 +63,20 @@
             "description": "metadata explaining the work itself"
         },
         "input": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "string"
-            },
+            "$ref": "#/$defs/DataStore",
             "description": "input required for the work."
         },
         "output": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "string"
-            },
+            "$ref": "#/$defs/DataStore",
             "description": "output produced by the task."
         },
         "variable": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "string"
-            },
+            "$ref": "#/$defs/DataStore",
             "description": "variables associated with the task."
+        },
+        "activatedBy": {
+            "type": "string",
+            "description": "ID of the work that activated this work."
         },
         "maintainer": {
             "type": "string",
@@ -99,17 +102,8 @@
             "description": "condition of abortion (mostly due to external factor)"
         },
         "next": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "array",
-                "item": "object",
-                "additionalProperties": true
-            },
+            "$ref": "#/$defs/Next",
             "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output"
-        },
-        "executedNextCondition": {
-            "type": "string",
-            "description": "executed condition from next branch"
         },
         "onAbort": {
             "$ref": "#/$defs/Flow",
@@ -167,12 +161,11 @@
                 "type": {
                     "type": "string",
                     "enum": [
-                        "TIME",
-                        "LOCATION",
-                        "IIL_INPUT",
-                        "IIL_VARIABLE",
-                        "IIL_STATE",
-                        "EVENT"
+                        "Variable",
+                        "Time",
+                        "Elapsed",
+                        "IilState",
+                        "Event"
                     ]
                 },
                 "code": {
@@ -184,23 +177,36 @@
                         "type": "string"
                     },
                     "description": "external input"
-                },
-                "injectedBy": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "source iil ID for injection"
                 }
             }
         },
+        "Next": {
+            "type": "object",
+            "required": [
+                "default"
+            ],
+            "patternProperties": {
+                ".*": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Flow"
+                    }
+                }
+            },
+            "additionalProperties": false
+        },
         "Flow": {
             "type": "object",
+            "additionalProperties": {
+                "type": "object"
+            },
             "properties": {
                 "flowType": {
                     "type": "string",
                     "enum": [
-                        "create",
                         "activate",
-                        "finish"
+                        "create",
+                        "report"
                     ]
                 },
                 "fromIil": {
@@ -211,23 +217,43 @@
                     "type": "string",
                     "format": "uuid"
                 },
-                "actor": {
+                "actorInjection": {
                     "type": "string"
                 },
                 "inputInjection": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "array",
-                        "item": "object",
-                        "additionalProperties": true
-                    }
+                    "$ref": "#/$defs/DataStore"
                 }
             },
             "required": [
                 "flowType",
                 "fromIil",
-                "toIil"
+              	"toIil"
             ]
+        },
+        "DataStore": {
+            "type": "object",
+            "additionalProperties": {
+                "anyOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "number"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    }
+                ]
+            }
         }
     }
 }
