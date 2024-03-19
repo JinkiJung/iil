@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.10",
+    "$version": "1.0.11",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "iil: a work description model.",
@@ -31,13 +31,13 @@
             "format": "uuid",
             "description": "ID of the parent work item that this work contributes to."
         },
-        "subtask": {
+        "steps": {
             "type": "array",
             "items": {
                 "type": "string",
                 "format": "uuid"
             },
-            "description": "subtasks that are part of the work."
+            "description": "subtasks that contribute to this work."
         },
         "namespace": {
             "type": "string",
