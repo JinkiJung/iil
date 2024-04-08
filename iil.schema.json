@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.11",
+    "$version": "1.0.12",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "iil: a work description model.",
@@ -47,20 +47,13 @@
             "type": "string",
             "description": "a version number of the work."
         },
-        "representation": {
+        "info": {
             "type": "object",
             "additionalProperties": {
                 "type": "object",
                 "additionalProperties": true
             },
             "description": "flexible metadata that can be used to provide information and guide users towards completing a task"
-        },
-        "about": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "string"
-            },
-            "description": "metadata explaining the work itself"
         },
         "input": {
             "$ref": "#/$defs/DataStore",
