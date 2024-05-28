@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.12",
+    "$version": "1.0.13",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "iil: a work description model.",
@@ -80,15 +80,8 @@
             "description": "ID of owner"
         },
         "state": {
-            "type": "string",
-            "enum": [
-                "INACTIVATED",
-                "ACTIVATED",
-                "PENDING",
-                "FINISHED",
-                "ABORTED"
-            ],
-            "description": "a state of iil"
+          	"$ref": "#/$defs/IilState",
+            "description": "Current state and reason"
         },
         "abortIf": {
             "$ref": "#/$defs/Condition",
@@ -108,10 +101,29 @@
         "act"
     ],
     "$defs": {
+        "IilState": {
+            "type": "object",
+            "properties": {
+                "state": {
+                    "type": "string",
+                    "enum": [
+                        "INACTIVATED",
+                        "ACTIVATED",
+                        "PENDING",
+                        "FINISHED",
+                        "ABORTED"
+                    ],
+                    "description": "a state of iil"
+                },
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
         "Act": {
             "type": "object",
             "properties": {
-                "id": {
+                "state": {
                     "type": "string",
                     "format": "uuid"
                 },
