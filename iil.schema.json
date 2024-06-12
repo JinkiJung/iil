@@ -1,35 +1,47 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.13",
+    "$version": "1.0.14",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
-    "description": "iil: a work description model.",
+    "description": "iil: a process model.",
     "properties": {
         "id": {
             "type": "string",
             "format": "uuid",
-            "description": "An unique identifier for an iil."
+            "description": "unique identifier.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
         },
         "activateIf": {
             "$ref": "#/$defs/Condition",
-            "description": "condition that activates this work."
+            "description": "condition that activates this work.",
+            "example": {
+                "name": "when it is raining"
+            }
         },
         "act": {
             "$ref": "#/$defs/Act",
-            "description": "a single unit of behavior with a clear beginning and end."
+            "description": "a single unit of finite behavior.",
+            "example": {
+                "name": "close the window"
+            }
         },
         "actor": {
             "type": "string",
-            "description": "actor who is responsible for task performance."
+            "description": "actor who is responsible for performing 'act'.",
+            "example": "resident"
         },
         "finishIf": {
             "$ref": "#/$defs/Condition",
-            "description": "condition under which the task is completed."
+            "description": "condition under which the task is considered finished.",
+            "example": {
+                "name": "when the window is tightly closed"
+            }
         },
         "goal": {
             "type": "string",
             "format": "uuid",
-            "description": "ID of the parent work item that this work contributes to."
+            "description": "parent work that this work contributes to.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
         },
         "steps": {
             "type": "array",
@@ -37,15 +49,18 @@
                 "type": "string",
                 "format": "uuid"
             },
-            "description": "subtasks that contribute to this work."
+            "description": "a list of subtasks that contribute to this work.",
+            "example": ["123e4567-e89b-12d3-a456-426614174000"]
         },
         "namespace": {
             "type": "string",
-            "description": "a namespace under which the work is categorized."
+            "description": "a namespace under which the work is categorized.",
+            "example": "home management"
         },
         "version": {
             "type": "string",
-            "description": "a version number of the work."
+            "description": "a version number of the work.",
+            "example": "1.0.0"
         },
         "info": {
             "type": "object",
@@ -53,47 +68,86 @@
                 "type": "object",
                 "additionalProperties": true
             },
-            "description": "flexible metadata that can be used to provide information and guide users towards completing a task"
+            "description": "flexible metadata that can be used to provide information and guide users towards completing a task",
+            "example": {
+                "description": "close the window",
+                "location": "living room"
+            }
         },
         "input": {
             "$ref": "#/$defs/DataStore",
-            "description": "input required for the work."
+            "description": "input required for the work.",
+            "example": {
+                "weatherForecastURL": "https://api.weather.com/forecast"
+            }
         },
         "output": {
             "$ref": "#/$defs/DataStore",
-            "description": "output produced by the task."
+            "description": "output produced by the work.",
+            "example": {
+                "windowStatus": "closed"
+            }
         },
         "variable": {
             "$ref": "#/$defs/DataStore",
-            "description": "variables associated with the task."
+            "description": "variables associated with the work.",
+            "example": {
+                "windowStatus": "open",
+                "weather": "sunny"
+            }
         },
-        "activatedBy": {
+        "previous": {
             "type": "string",
-            "description": "ID of the work that activated this work."
+            "format": "uuid",
+            "description": "ID of the work that has activated this work.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
         },
         "maintainer": {
             "type": "string",
-            "description": "ID of maintainer"
+            "description": "ID of maintainer",
+            "example": "property management company"
         },
         "owner": {
             "type": "string",
-            "description": "ID of owner"
+            "description": "ID of owner",
+            "example": "home owner"
         },
         "state": {
           	"$ref": "#/$defs/IilState",
-            "description": "Current state and reason"
+            "description": "Current state and reason",
+            "example": {
+                "state": "INACTIVATED",
+                "reason": "waiting for rain"
+            }
         },
         "abortIf": {
             "$ref": "#/$defs/Condition",
-            "description": "condition of abortion (mostly due to external factor)"
+            "description": "condition of abortion (mostly due to external factor)",
+            "example": {
+                "name": "when the window is broken"
+            }
         },
         "next": {
             "$ref": "#/$defs/Next",
-            "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output"
+            "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output",
+            "example": {
+                "default": [
+                    {
+                        "flowType": "activate",
+                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
+                        "toIil": "123e4567-e89b-12d3-a456-426614174001"
+                    }
+                ]
+            }
         },
         "onAbort": {
             "$ref": "#/$defs/Flow",
-            "description": "flow control element"
+            "description": "flow control element",
+            "example": {
+                "flowType": "activate",
+                "fromIil": "123e4567-e89b-12d3-a456-426614174000",
+                "toIil": "123e4567-e89b-12d3-a456-426614174001"
+            }
         }
     },
     "required": [
@@ -149,19 +203,29 @@
             "properties": {
                 "id": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "unique identifier.",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
                 },
                 "namespace": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "a namespace under which the condition is categorized.",
+                    "example": "weather"
                 },
                 "version": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "a version number of the condition.",
+                    "example": "1.0.0"
                 },
                 "shortName": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "short name of the condition.",
+                    "example": "weather:rain"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "name of the condition.",
+                    "example": "when it is raining"
                 },
                 "type": {
                     "type": "string",
@@ -171,17 +235,24 @@
                         "Elapsed",
                         "IilState",
                         "Event"
-                    ]
+                    ],
+                    "description": "type of the condition.",
+                    "example": "Variable"
                 },
                 "code": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "executable code of the condition.",
+                    "example": "fetch($weatherForecastURL).then(response => response.json()).then(data => data.weather.includes('rain'));"
                 },
                 "input": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
                     },
-                    "description": "external input"
+                    "description": "external input",
+                    "example": {
+                        "weatherForecastURL": "https://api.weather.com/forecast"
+                    }
                 }
             }
         },
@@ -198,6 +269,23 @@
                     }
                 }
             },
+            "description": "automated execution of the next work (as seen in value) when the condition specified by the key is satisfied",
+            "example" : {
+                "$weather == 'storm": [
+                    {
+                        "flowType": "activate",
+                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
+                        "toIil": "123e4567-e89b-12d3-a456-426614174002"
+                    }
+                ],
+                "default": [
+                    {
+                        "flowType": "activate",
+                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
+                        "toIil": "123e4567-e89b-12d3-a456-426614174001"
+                    }
+                ]
+            },
             "additionalProperties": false
         },
         "Flow": {
@@ -212,22 +300,40 @@
                         "activate",
                         "create",
                         "report"
-                    ]
+                    ],
+                    "description": "type of flow",
+                    "example": "activate"
                 },
                 "fromIil": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "ID of the work that has activated this work.",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
                 },
                 "toIil": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "ID of the work that is activated by this work.",
+                    "example": "123e4567-e89b-12d3-a456-426614174001"
                 },
                 "actorInjection": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "actor who is responsible for performing 'toIil'.",
+                    "example": "resident"
                 },
                 "inputInjection": {
-                    "$ref": "#/$defs/DataStore"
+                    "$ref": "#/$defs/DataStore",
+                    "description": "input required for the work 'toIil'.",
+                    "example": {
+                        "weatherForecastURL": "https://api.weather.com/forecast"
+                    }
                 }
+            },
+            "description": "flow control element",
+            "example": {
+                "flowType": "activate",
+                "fromIil": "123e4567-e89b-12d3-a456-426614174000",
+                "toIil": "123e4567-e89b-12d3-a456-426614174001"
             },
             "required": [
                 "flowType",
@@ -258,6 +364,10 @@
                         }
                     }
                 ]
+            },
+            "description": "a data store that can be used to store input, output, and variables.",
+            "example": {
+                "windowStatus": "open"
             }
         }
     }
