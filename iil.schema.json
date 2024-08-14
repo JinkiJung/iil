@@ -30,7 +30,7 @@
             "description": "actor who is responsible for performing 'act'.",
             "example": "resident"
         },
-        "finishIf": {
+        "actDoneIf": {
             "$ref": "#/$defs/Condition",
             "description": "condition under which the task is considered finished.",
             "example": {
@@ -127,7 +127,7 @@
                 "name": "when the window is broken"
             }
         },
-        "next": {
+        "checkout": {
             "$ref": "#/$defs/Next",
             "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output",
             "example": {
@@ -151,7 +151,7 @@
         }
     },
     "required": [
-        "finishIf",
+        "actDoneIf",
         "act"
     ],
     "$defs": {
@@ -162,8 +162,10 @@
                     "type": "string",
                     "enum": [
                         "INACTIVATED",
+                        "INPUTPENDING",
                         "ACTIVATED",
                         "PENDING",
+                        "OUTPUTPENDING",
                         "FINISHED",
                         "ABORTED"
                     ],
@@ -297,6 +299,7 @@
                 "flowType": {
                     "type": "string",
                     "enum": [
+                        "activateReady",
                         "activate",
                         "create",
                         "report"
