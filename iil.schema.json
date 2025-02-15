@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.14",
+    "$version": "1.0.15",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "iil: a process model.",
@@ -37,43 +37,6 @@
                 "name": "when the window is tightly closed"
             }
         },
-        "goal": {
-            "type": "string",
-            "format": "uuid",
-            "description": "parent work that this work contributes to.",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "steps": {
-            "type": "array",
-            "items": {
-                "type": "string",
-                "format": "uuid"
-            },
-            "description": "a list of subtasks that contribute to this work.",
-            "example": ["123e4567-e89b-12d3-a456-426614174000"]
-        },
-        "namespace": {
-            "type": "string",
-            "description": "a namespace under which the work is categorized.",
-            "example": "home management"
-        },
-        "version": {
-            "type": "string",
-            "description": "a version number of the work.",
-            "example": "1.0.0"
-        },
-        "info": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "object",
-                "additionalProperties": true
-            },
-            "description": "flexible metadata that can be used to provide information and guide users towards completing a task",
-            "example": {
-                "description": "close the window",
-                "location": "living room"
-            }
-        },
         "input": {
             "$ref": "#/$defs/DataStore",
             "description": "input required for the work.",
@@ -88,12 +51,33 @@
                 "windowStatus": "closed"
             }
         },
-        "variable": {
-            "$ref": "#/$defs/DataStore",
-            "description": "variables associated with the work.",
+        "goal": {
+            "type": "string",
+            "format": "uuid",
+            "description": "parent work that this work contributes to.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "steps": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "description": "a list of subtasks that contribute to this work.",
+            "example": [
+                "123e4567-e89b-12d3-a456-426614174000"
+            ]
+        },
+        "info": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "additionalProperties": true
+            },
+            "description": "flexible metadata that can be used to provide information and guide users towards completing a task",
             "example": {
-                "windowStatus": "open",
-                "weather": "sunny"
+                "description": "close the window",
+                "location": "living room"
             }
         },
         "previous": {
@@ -101,31 +85,6 @@
             "format": "uuid",
             "description": "ID of the work that has activated this work.",
             "example": "123e4567-e89b-12d3-a456-426614174000"
-        },
-        "maintainer": {
-            "type": "string",
-            "description": "ID of maintainer",
-            "example": "property management company"
-        },
-        "owner": {
-            "type": "string",
-            "description": "ID of owner",
-            "example": "home owner"
-        },
-        "state": {
-          	"$ref": "#/$defs/IilState",
-            "description": "Current state and reason",
-            "example": {
-                "state": "INACTIVATED",
-                "reason": "waiting for rain"
-            }
-        },
-        "abortIf": {
-            "$ref": "#/$defs/Condition",
-            "description": "condition of abortion (mostly due to external factor)",
-            "example": {
-                "name": "when the window is broken"
-            }
         },
         "checkout": {
             "$ref": "#/$defs/Next",
@@ -140,13 +99,25 @@
                 ]
             }
         },
-        "onAbort": {
-            "$ref": "#/$defs/Flow",
-            "description": "flow control element",
+        "errorHandling": {
+            "$ref": "#/$defs/Next",
+            "description": "error hadling of current work which consists of condition and transition to other iil",
             "example": {
-                "flowType": "activate",
-                "fromIil": "123e4567-e89b-12d3-a456-426614174000",
-                "toIil": "123e4567-e89b-12d3-a456-426614174001"
+                "when server is down": [
+                    {
+                        "flowType": "activate",
+                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
+                        "toIil": "123e4567-e89b-12d3-a456-426614174001"
+                    }
+                ]
+            }
+        },
+        "state": {
+            "$ref": "#/$defs/IilState",
+            "description": "Current state and reason",
+            "example": {
+                "state": "INACTIVATED",
+                "reason": "waiting for rain"
             }
         }
     },
@@ -272,7 +243,7 @@
                 }
             },
             "description": "automated execution of the next work (as seen in value) when the condition specified by the key is satisfied",
-            "example" : {
+            "example": {
                 "$weather == 'storm": [
                     {
                         "flowType": "activate",
@@ -319,7 +290,7 @@
                     "description": "ID of the work that is activated by this work.",
                     "example": "123e4567-e89b-12d3-a456-426614174001"
                 },
-                "actorInjection": {
+                "injection": {
                     "type": "string",
                     "description": "actor who is responsible for performing 'toIil'.",
                     "example": "resident"
@@ -341,7 +312,7 @@
             "required": [
                 "flowType",
                 "fromIil",
-              	"toIil"
+                "toIil"
             ]
         },
         "DataStore": {
