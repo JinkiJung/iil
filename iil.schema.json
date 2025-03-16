@@ -1,6 +1,6 @@
 {
     "$id": "https://github.com/JinkiJung/iil/blob/main/iil.schema.json",
-    "$version": "1.0.15",
+    "$version": "1.0.16",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "description": "iil: a process model.",
@@ -96,7 +96,7 @@
                     },
                     "transitions": [
                         {
-                            "flowType": "activate",
+                            "type": "activate",
                             "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
                             "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                         }
@@ -106,7 +106,7 @@
                     "condition": "default",
                     "transitions": [
                         {
-                            "flowType": "activate",
+                            "type": "activate",
                             "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
                             "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                         }
@@ -118,14 +118,20 @@
             "$ref": "#/$defs/Next",
             "description": "error hadling of current work which consists of condition and transition to other iil",
             "example": {
-                "when server is down": [
-                    {
-                        "flowType": "activate",
-                        "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
-                        "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
-                    }
-                ]
-            }
+                    "condition": {
+                        "id": "com.company.platform.condition:01H5G6XN89A1XMS3QWJD1PT29V",
+                        "name": "when server is down",
+                        "type": "Variable",
+                        "code": "$response.code != '200'"
+                    },
+                    "transitions": [
+                        {
+                            "type": "activate",
+                            "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                            "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
+                        }
+                    ]
+                },
         },
         "state": {
             "$ref": "#/$defs/IilState",
@@ -238,18 +244,24 @@
             ]
         },
         "Next": {
-            "type": "object",
-            "required": [
-                "default"
-            ],
-            "patternProperties": {
-                ".*": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/$defs/Flow"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "condition": {
+                        "$ref": "#/$defs/Condition"
+                        "description": "Condition that triggers the associated transitions."
+                    },
+                    "transitions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/Transition"
+                        },
+                        "description": "List of transitions to execute when the condition is met."
                     }
-                }
-            },
+                },
+                "required": ["condition", "transitions"]
+            }
             "description": "a set of automated transitions when the specified condition is satisfied, with priority determined by the order of the list.",
             "example": [
                 {
@@ -261,7 +273,7 @@
                     },
                     "transitions": [
                         {
-                            "flowType": "activate",
+                            "type": "activate",
                             "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
                             "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                         }
@@ -271,7 +283,7 @@
                     "condition": "default",
                     "transitions": [
                         {
-                            "flowType": "activate",
+                            "type": "activate",
                             "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
                             "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                         }
@@ -286,7 +298,7 @@
                 "type": "object"
             },
             "properties": {
-                "flowType": {
+                "type": {
                     "type": "string",
                     "enum": [
                         "activateReady",
@@ -294,7 +306,7 @@
                         "create",
                         "report"
                     ],
-                    "description": "type of flow",
+                    "description": "type of transition",
                     "example": "activate"
                 },
                 "fromIil": {
@@ -320,14 +332,14 @@
                     }
                 }
             },
-            "description": "flow control element",
+            "description": "transition control element",
             "example": {
-                "flowType": "activate",
+                "type": "activate",
                 "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
                 "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
             },
             "required": [
-                "flowType",
+                "type",
                 "fromIil",
                 "toIil"
             ]
