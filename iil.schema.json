@@ -7,9 +7,8 @@
     "properties": {
         "id": {
             "type": "string",
-            "format": "uuid",
-            "description": "unique identifier.",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
+            "description": "unique identifier with [namespace]:[ULID]",
+            "example": "com.company.platform:01H5G6XN89A1XMS3QWJD1PT29T"
         },
         "activateIf": {
             "$ref": "#/$defs/Condition",
@@ -53,19 +52,18 @@
         },
         "goal": {
             "type": "string",
-            "format": "uuid",
             "description": "parent work that this work contributes to.",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
+            "example": "com.company.platform:01H5G6XN89A1XMS3QWJD1PT29T"
         },
         "steps": {
             "type": "array",
             "items": {
-                "type": "string",
-                "format": "uuid"
+                "type": "string"
             },
             "description": "a list of subtasks that contribute to this work.",
             "example": [
-                "123e4567-e89b-12d3-a456-426614174000"
+                "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP",
             ]
         },
         "info": {
@@ -82,22 +80,39 @@
         },
         "previous": {
             "type": "string",
-            "format": "uuid",
             "description": "ID of the work that has activated this work.",
-            "example": "123e4567-e89b-12d3-a456-426614174000"
+            "example": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
         },
         "checkout": {
             "$ref": "#/$defs/Next",
             "description": "automated execution of the next work corresponding to the completion of the current work and evaluation of its output",
-            "example": {
-                "default": [
-                    {
-                        "flowType": "activate",
-                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
-                        "toIil": "123e4567-e89b-12d3-a456-426614174001"
-                    }
-                ]
-            }
+            "example": [
+                {
+                    "condition": {
+                        "id": "com.company.platform.condition:01H5G6XN89A1XMS3QWJD1PT29V",
+                        "name": "If weather is stormy",
+                        "type": "Variable",
+                        "code": "$weather == 'storm'"
+                    },
+                    "transitions": [
+                        {
+                            "flowType": "activate",
+                            "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                            "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
+                        }
+                    ]
+                },
+                {
+                    "condition": "default",
+                    "transitions": [
+                        {
+                            "flowType": "activate",
+                            "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                            "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
+                        }
+                    ]
+                }
+            ]
         },
         "errorHandling": {
             "$ref": "#/$defs/Next",
@@ -106,8 +121,8 @@
                 "when server is down": [
                     {
                         "flowType": "activate",
-                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
-                        "toIil": "123e4567-e89b-12d3-a456-426614174001"
+                        "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                        "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                     }
                 ]
             }
@@ -172,62 +187,55 @@
             }
         },
         "Condition": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "unique identifier.",
-                    "example": "123e4567-e89b-12d3-a456-426614174000"
-                },
-                "namespace": {
-                    "type": "string",
-                    "description": "a namespace under which the condition is categorized.",
-                    "example": "weather"
-                },
-                "version": {
-                    "type": "string",
-                    "description": "a version number of the condition.",
-                    "example": "1.0.0"
-                },
-                "shortName": {
-                    "type": "string",
-                    "description": "short name of the condition.",
-                    "example": "weather:rain"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "name of the condition.",
-                    "example": "when it is raining"
-                },
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "Variable",
-                        "Time",
-                        "Elapsed",
-                        "IilState",
-                        "Event"
-                    ],
-                    "description": "type of the condition.",
-                    "example": "Variable"
-                },
-                "code": {
-                    "type": "string",
-                    "description": "executable code of the condition.",
-                    "example": "fetch($weatherForecastURL).then(response => response.json()).then(data => data.weather.includes('rain'));"
-                },
-                "input": {
+            "oneOf": [
+                {
                     "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "description": "external input",
-                    "example": {
-                        "weatherForecastURL": "https://api.weather.com/forecast"
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "unique identifier with [namespace]:[ULID] format.",
+                            "example": "com.company.platform.condition:01H5G6XN89A1XMS3QWJD1PT29V"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name of the condition.",
+                            "example": "when it is raining"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "Variable",
+                                "Time",
+                                "Elapsed",
+                                "IilState",
+                                "Event"
+                            ],
+                            "description": "type of the condition.",
+                            "example": "Variable"
+                        },
+                        "code": {
+                            "type": "string",
+                            "description": "executable code of the condition.",
+                            "example": "fetch($weatherForecastURL).then(response => response.json()).then(data => data.weather.includes('rain'));"
+                        },
+                        "input": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "description": "external input",
+                            "example": {
+                                "weatherForecastURL": "https://api.weather.com/forecast"
+                            }
+                        }
                     }
+                },
+                {
+                    "type": "string",
+                    "enum": ["default"],
+                    "description": "Default condition, used when no other conditions match."
                 }
-            }
+            ]
         },
         "Next": {
             "type": "object",
@@ -242,26 +250,37 @@
                     }
                 }
             },
-            "description": "automated execution of the next work (as seen in value) when the condition specified by the key is satisfied",
-            "example": {
-                "$weather == 'storm": [
-                    {
-                        "flowType": "activate",
-                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
-                        "toIil": "123e4567-e89b-12d3-a456-426614174002"
-                    }
-                ],
-                "default": [
-                    {
-                        "flowType": "activate",
-                        "fromIil": "123e4567-e89b-12d3-a456-426614174000",
-                        "toIil": "123e4567-e89b-12d3-a456-426614174001"
-                    }
-                ]
-            },
+            "description": "a set of automated transitions when the specified condition is satisfied, with priority determined by the order of the list.",
+            "example": [
+                {
+                    "condition": {
+                        "id": "com.company.platform.condition:01H5G6XN89A1XMS3QWJD1PT29V",
+                        "name": "If weather is stormy",
+                        "type": "Variable",
+                        "code": "$weather == 'storm'"
+                    },
+                    "transitions": [
+                        {
+                            "flowType": "activate",
+                            "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                            "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
+                        }
+                    ]
+                },
+                {
+                    "condition": "default",
+                    "transitions": [
+                        {
+                            "flowType": "activate",
+                            "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                            "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
+                        }
+                    ]
+                }
+            ],
             "additionalProperties": false
         },
-        "Flow": {
+        "Transition": {
             "type": "object",
             "additionalProperties": {
                 "type": "object"
@@ -280,15 +299,13 @@
                 },
                 "fromIil": {
                     "type": "string",
-                    "format": "uuid",
                     "description": "ID of the work that has activated this work.",
-                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                    "example": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                 },
                 "toIil": {
                     "type": "string",
-                    "format": "uuid",
                     "description": "ID of the work that is activated by this work.",
-                    "example": "123e4567-e89b-12d3-a456-426614174001"
+                    "example": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
                 },
                 "injection": {
                     "type": "string",
@@ -306,8 +323,8 @@
             "description": "flow control element",
             "example": {
                 "flowType": "activate",
-                "fromIil": "123e4567-e89b-12d3-a456-426614174000",
-                "toIil": "123e4567-e89b-12d3-a456-426614174001"
+                "fromIil": "com.company.platform:01JPGA97JA0PT6F4BSVT149EAW",
+                "toIil": "com.company.platform:01JPGA9RH04G2BHE8Q89YG28QP"
             },
             "required": [
                 "flowType",
